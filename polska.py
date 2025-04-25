@@ -35,7 +35,13 @@ class PolandMap:
     def draw(self):
         fig, ax = plt.subplots(figsize=(8, 8))
         self.poland.plot(ax=ax, color="lightgrey", edgecolor="black")
-        ax.scatter([city_pos[2] for city_pos in self.cities], [city_pos[1] for city_pos in self.cities])
+        sc = ax.scatter(
+            [city_pos[2] for city_pos in self.cities],
+            [city_pos[1] for city_pos in self.cities],
+            c=[value["hourly"]["temperature_2m"][0] for value in self.data],
+            cmap="coolwarm",
+        )
+        plt.colorbar(sc, ax=ax)
         for i, city in enumerate(self.cities):
             temp = self.data[i]["hourly"]["temperature_2m"][0]
             ax.text(
